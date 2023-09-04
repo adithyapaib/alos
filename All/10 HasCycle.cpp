@@ -1,50 +1,59 @@
 #include <iostream>
 using namespace std;
 
-const int V = 5;
-int graph[V][V] = {0};
+bool visited[100] = {false};
+bool hasCycle = false;
+int graph[10][10] = {0};
+int numNodes, numEdges; 
+int path[10], pathIndex = 0;
 
-bool hasCycleUtil(int v, bool visited[], bool recStack[]) {
-    visited[v] = true;
-    recStack[v] = true;
 
-    for (int i = 0; i < V; i++) {
-        if (graph[v][i] == 1) {
-            if (!visited[i] && hasCycleUtil(i, visited, recStack))
-                return true;
-            else if (recStack[i])
-                return true;
-        }
+
+
+void dfs(int node, int parent) {
+
+  visited[node] = true;
+  path[pathIndex++] = node;
+
+  for(int i = 0; i < numNodes; i++) {
+    if(graph[node][i] == 1 && !visited[i]) {
+      dfs(i, node); 
+      return;
     }
-
-    recStack[v] = false;
-    return false;
-}
-
-bool hasCycle() {
-    bool visited[V] = {false};
-    bool recStack[V] = {false};
-
-    for (int i = 0; i < V; i++) {
-        if (!visited[i]) {
-            if (hasCycleUtil(i, visited, recStack))
-                return true;
-        }
+    else if(graph[node][i] == 1 && i != parent) {
+     hasCycle = true;
+     cout << "Cycle: ";
+    for (int i = 0; i < pathIndex; i++) 
+        cout << path[i] << "-> ";
+      return;
     }
-
-    return false;
+  }
+  pathIndex--;
 }
 
 int main() {
-    graph[0][2] = 1;
-    graph[0][3] = 1;
-    graph[2][4] = 1;
-    graph[3][2] = 1;
-    graph[4][1] = 1;
-    if (hasCycle())
-        cout << "Graph contains a cycle." << endl;
-    else
-        cout << "Graph does not contain a cycle." << endl;
 
-    return 0;
+  cout << "Enter number of nodes and edges: ";
+  cin >> numNodes >> numEdges;
+
+  cout << "Enter edges:\n";
+  for(int i = 0; i < numEdges; i++) {
+    int u, v;
+    cin >> u >> v;
+    graph[u][v] = 1;
+    graph[v][u] = 1;
+  }
+
+  
+  for(int i = 0; i < numNodes; i++) {
+    if(!visited[i])
+      dfs(i, -1); 
+  }
+
+  if(hasCycle) 
+    cout << "Graph contains cycle";
+  else
+    cout << "Graph doesn't contain cycle";
+
+  return 0;
 }
