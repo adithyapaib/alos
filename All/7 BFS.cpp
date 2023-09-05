@@ -50,3 +50,78 @@ int main() {
 
   return 0;
 }
+
+
+
+
+
+or
+
+
+
+
+#include <iostream>
+#include <queue>
+
+using namespace std;
+int nodes, edges, graph[10][10] = {0};
+bool visited[10] = {false};
+queue <int> q;
+
+void dfs(int start){
+    visited[start] = true;
+    cout<<start<<" ";
+    for(int i = 0; i<nodes;i++)
+        if(graph[start][i] ==1 && !visited[i])
+            dfs(i);
+}
+
+void bfs(){
+    if(q.empty())
+        return;
+    int item = q.front();
+    q.pop();
+    visited[item] = true;
+    cout<<item<<" ";
+    for(int i = 0; i<nodes; i++){
+        if(graph[item][i] ==1 && !visited[i]){
+            q.push(i);
+            visited[i] = true;
+        }
+    }
+    bfs();
+    
+}
+
+
+
+int main() {
+    cout << "Enter the number of nodes: ";
+    cin >> nodes;
+    cout << "Enter the number of edges: ";
+    cin >> edges;
+
+
+    cout << "Enter the edges:\n";
+    for (int i = 0; i < edges; i++) {
+        int u, v;
+        cin >> u >> v;
+        graph[u][v] = 1;
+        graph[v][u] = 1;
+    }
+    int start;
+    cout<<endl<<"Enter start node";
+    cin>>start;
+
+    //dfs(start);
+    
+    for(int i = 0;i<nodes;i++)
+        visited[i] = false;
+    
+    
+    
+    q.push(start);
+    bfs();
+    
+    return 0;
+}
