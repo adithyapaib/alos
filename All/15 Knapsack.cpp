@@ -14,6 +14,7 @@ void bubbleSort(float arr[], int n){
 int findIndex(int p){
     for(int i = 0; i<n;i++)
         if(temp[i] == p){
+              temp[i] = -999;
               return i;
         }
     return 0;
@@ -29,7 +30,6 @@ void kp(){
         if(W-wt[index] >=0){
             W-=wt[index];
             profit+=val[index];
-            cout<<"weights"<<endl<<wt[index];
             xi[index] = 1;
         }
     }
