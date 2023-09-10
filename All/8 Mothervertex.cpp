@@ -7,21 +7,13 @@ int numNodes, numEdges;
 int graph[10][10] = {0};
 
 void dfs(int start) {
-    int stack[100], top = -1;
-    stack[++top] = start;
     visited[start] = true;
-
-    while (top >= 0) {
-        int node = stack[top--];
-    //cout << node << " ";
-
-        for (int i = 0; i < numNodes; i++) {
-            if (graph[node][i] && !visited[i]) {
-                stack[++top] = i;
-                visited[i] = true;
-            }
-        }
-    }
+        for (int i = 0; i < numNodes; i++) 
+            if (graph[start][i] && !visited[i]) 
+                dfs(i);
+                
+            
+        
 }
 
 int findMotherVertex() {
@@ -40,23 +32,27 @@ for(int i = 0; i < numNodes;i ++)
 return mother;
 }
 
+
 int main() {
-    numNodes = 5;
-    numEdges = 3;
+    cout << "Enter the number of nodes: ";
+    cin >> numNodes;
+    cout << "Enter the number of edges: ";
+    cin >> numEdges;
 
-    graph[4][1] = 1;
-    graph[4][2] = 1;
-    graph[4][3] = 1;
-    graph[4][0] = 1;
-
+    int u, v;
+    cout << "Enter the edges:\n";
+    for (int i = 0; i < numEdges; i++) {
+        cin >> u >> v;
+        graph[u][v] = 1, graph[v][u] = 1;
+    }
 
     int motherVertex = findMotherVertex();
 
-    if (motherVertex != -1) {
+    if (motherVertex != -1) 
         cout << "A mother vertex is " << motherVertex << endl;
-    } else {
+    else 
         cout << "No mother vertex exists" << endl;
-    }
+    
 
     return 0;
 }
